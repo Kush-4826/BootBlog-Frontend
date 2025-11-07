@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Card, Col, Button, Form } from "react-bootstrap";
+import { useAuth } from "../../context/AuthContext";
+import { Link, useLocation, useNavigate } from "react-router";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -10,6 +12,20 @@ function Login() {
     username: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { isAuthenticated, login, error } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/';
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
 
   const handleEmailChange = (e) => {
     setErrors((prev) => ({ ...prev, username: "" }));
@@ -21,17 +37,70 @@ function Login() {
     setFormData((prev) => ({ ...prev, password: e.target.value }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (formData.username.length == 0) {
-      setErrors((prev) => ({ ...prev, username: "Username is required" }));
-    }
-    if (formData.password.length == 0) {
-      setErrors((prev) => ({ ...prev, password: "Password is required" }));
-    }
+    e.stopPropagation();
 
-    // TODO: Handle Submission Logic
-    console.log(formData);    
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+
+    try {
+      console.log("Form submitted");
+
+      // Clear previous errors
+      setErrors({ username: "", password: "" });
+
+      // Validation
+      if (formData.username.length === 0 || formData.password.length === 0) {
+        let errorObject = {};
+        if (formData.username.length === 0) {
+          errorObject = { ...errorObject, username: "Username is required" };
+        }
+        if (formData.password.length === 0) {
+          errorObject = { ...errorObject, password: "Password is required" };
+        }
+        setErrors(errorObject);
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      // Call login
+      const result = await login(formData.username, formData.password);
+
+      console.log("Login result:", result);
+
+      if (result && result.success) {
+        navigate(from, { replace: true });
+      } else if (result.validationErrors) {
+        // Handle 422 validation errors from server
+        console.log("Server validation errors:", result.validationErrors);
+        
+        const newErrors = {
+          username: result.validationErrors.username || "",
+          password: result.validationErrors.password || "",
+        };
+        
+        setErrors(newErrors);
+      } else {
+        // Handle other errors (401, etc.)
+        const errorMessage = result?.error || error?.error || "Login failed. Please try again.";
+        console.log("Setting error message:", errorMessage);
+
+        setErrors({
+          username: errorMessage,
+          password: ""
+        });
+      }
+    } catch (err) {
+      console.error("Form error:", err);
+      setErrors({
+        username: "An unexpected error occurred",
+        password: ""
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -42,20 +111,22 @@ function Login() {
       <Row className="d-flex justify-content-center">
         <Col sm={12} md={8} lg={6}>
           <Card>
-            {/* <Card.Header className="text-center">Login to BootBlog to Continue</Card.Header> */}
-            <Form onSubmit={handleFormSubmit}>
+            <Form onSubmit={handleFormSubmit} noValidate>
               <Card.Body>
                 <Form.Group className="mb-3" controlId="username">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="johndoe"
+                    value={formData.username}
                     onChange={handleEmailChange}
+                    isInvalid={errors.username.length !== 0}
+                    disabled={isSubmitting}
                   />
-                  {errors.username.length != 0 && (
-                    <label className="text-danger d-block" style={{ fontSize: "0.75em" }}>
+                  {errors.username.length !== 0 && (
+                    <Form.Control.Feedback type="invalid">
                       {errors.username}
-                    </label>
+                    </Form.Control.Feedback>
                   )}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="password">
@@ -63,22 +134,25 @@ function Login() {
                   <Form.Control
                     type="password"
                     placeholder="Password"
+                    value={formData.password}
                     onChange={handlePasswordChange}
+                    isInvalid={errors.password.length !== 0}
+                    disabled={isSubmitting}
                   />
-                  {errors.password.length != 0 && (
-                    <label className="text-danger d-block" style={{ fontSize: "0.75em" }}>
+                  {errors.password.length !== 0 && (
+                    <Form.Control.Feedback type="invalid">
                       {errors.password}
-                    </label>
+                    </Form.Control.Feedback>
                   )}
                 </Form.Group>
               </Card.Body>
               <Card.Footer className="d-flex justify-content-between align-items-center">
                 <p className="m-0">
                   Don't have an account? &nbsp;
-                  <Card.Link href="#">Register</Card.Link>
+                  <Link to="/register">Register</Link>
                 </p>
-                <Button variant="primary" type="submit">
-                  Login
+                <Button variant="primary" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Logging in..." : "Login"}
                 </Button>
               </Card.Footer>
             </Form>
