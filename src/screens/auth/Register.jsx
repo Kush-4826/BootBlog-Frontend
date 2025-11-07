@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../../context/AuthContext";
+import useDynamicTitle from "../../hooks/useDynamicTitle";
 
 function Register() {
+  useDynamicTitle("Register | BootBlog");
   const [formData, setFormData] = useState({
     username: "",
     email: "",
