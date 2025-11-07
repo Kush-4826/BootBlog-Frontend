@@ -119,7 +119,7 @@ function Login() {
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="johndoe"
+                    placeholder="Enter Username"
                     value={formData.username}
                     onChange={handleEmailChange}
                     isInvalid={errors.username.length !== 0}
@@ -135,7 +135,7 @@ function Login() {
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
-                    placeholder="Password"
+                    placeholder="Enter Password"
                     value={formData.password}
                     onChange={handlePasswordChange}
                     isInvalid={errors.password.length !== 0}

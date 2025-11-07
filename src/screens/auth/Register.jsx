@@ -198,7 +198,7 @@ function Register() {
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="johndoe"
+                    placeholder="Enter a Username"
                     value={formData.username}
                     onChange={handleUsernameChange}
                     isInvalid={errors.username.length !== 0}
@@ -215,7 +215,7 @@ function Register() {
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder="Enter a valid Email"
                     value={formData.email}
                     onChange={handleEmailChange}
                     isInvalid={errors.email.length !== 0}
@@ -232,7 +232,7 @@ function Register() {
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
-                    placeholder="Password"
+                    placeholder="Enter Password"
                     value={formData.password}
                     onChange={handlePasswordChange}
                     isInvalid={errors.password.length !== 0}
