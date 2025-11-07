@@ -13,7 +13,7 @@ const Profile = () => {
   }
   return (
     <>
-      <div>Welcome, {user?.username}!</div>
+      <div>Welcome, {JSON.stringify(user)}!</div>
       <Button variant="danger" onClick={handleLogout}>Logout</Button>
     </>
   );
