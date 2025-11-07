@@ -1,9 +1,14 @@
-import Login from './screens/auth/Login';
-import Register from './screens/auth/Register';
+import { BrowserRouter } from 'react-router';
+import { AuthProvider } from './context/AuthContext';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
-    <Login />
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
