@@ -34,7 +34,7 @@ const Profile = () => {
 
   const navigation = useNavigate();
 
-  useDynamicTitle(user.username + " | Profile");
+  useDynamicTitle(user.name + " | Profile");
 
   const handleLogout = () => {
     logout();
@@ -133,9 +133,9 @@ const Profile = () => {
                       fontSize: "36px",
                     }}
                   >
-                    {user.username.substring(0, 1).toUpperCase()}
+                    {user.name.substring(0, 1).toUpperCase()}
                   </div>
-                  <h4 className="text-center">{user.username}</h4>
+                  <h4 className="text-center">{user.name}</h4>
                   <p className="text-center mb-0">ID: {user.id}</p>
                   <Button
                     variant="danger"

@@ -7,11 +7,11 @@ import useDynamicTitle from "../../hooks/useDynamicTitle";
 function Login() {
   useDynamicTitle("Login | BootBlog");
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,8 +30,8 @@ function Login() {
   }, [isAuthenticated, navigate, from]);
 
   const handleEmailChange = (e) => {
-    setErrors((prev) => ({ ...prev, username: "" }));
-    setFormData((prev) => ({ ...prev, username: e.target.value }));
+    setErrors((prev) => ({ ...prev, email: "" }));
+    setFormData((prev) => ({ ...prev, email: e.target.value }));
   };
 
   const handlePasswordChange = (e) => {
@@ -50,13 +50,13 @@ function Login() {
       console.log("Form submitted");
 
       // Clear previous errors
-      setErrors({ username: "", password: "" });
+      setErrors({ email: "", password: "" });
 
       // Validation
-      if (formData.username.length === 0 || formData.password.length === 0) {
+      if (formData.email.length === 0 || formData.password.length === 0) {
         let errorObject = {};
-        if (formData.username.length === 0) {
-          errorObject = { ...errorObject, username: "Username is required" };
+        if (formData.email.length === 0) {
+          errorObject = { ...errorObject, email: "Email is required" };
         }
         if (formData.password.length === 0) {
           errorObject = { ...errorObject, password: "Password is required" };
@@ -68,7 +68,7 @@ function Login() {
       setIsSubmitting(true);
 
       // Call login
-      const result = await login(formData.username, formData.password);
+      const result = await login(formData.email, formData.password);
 
       console.log("Login result:", result);
 
@@ -79,7 +79,7 @@ function Login() {
         console.log("Server validation errors:", result.validationErrors);
         
         const newErrors = {
-          username: result.validationErrors.username || "",
+          email: result.validationErrors.email || "",
           password: result.validationErrors.password || "",
         };
         
@@ -90,14 +90,14 @@ function Login() {
         console.log("Setting error message:", errorMessage);
 
         setErrors({
-          username: errorMessage,
+          email: errorMessage,
           password: ""
         });
       }
     } catch (err) {
       console.error("Form error:", err);
       setErrors({
-        username: "An unexpected error occurred",
+        email: "An unexpected error occurred",
         password: ""
       });
     } finally {
@@ -115,19 +115,19 @@ function Login() {
           <Card>
             <Form onSubmit={handleFormSubmit} noValidate>
               <Card.Body>
-                <Form.Group className="mb-3" controlId="username">
-                  <Form.Label>Username</Form.Label>
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter Username"
-                    value={formData.username}
+                    placeholder="Enter email"
+                    value={formData.email}
                     onChange={handleEmailChange}
-                    isInvalid={errors.username.length !== 0}
+                    isInvalid={errors.email.length !== 0}
                     disabled={isSubmitting}
                   />
-                  {errors.username.length !== 0 && (
+                  {errors.email.length !== 0 && (
                     <Form.Control.Feedback type="invalid">
-                      {errors.username}
+                      {errors.email}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>

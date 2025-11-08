@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
   }, [backendUrl]);
 
-  const login = async (username, password) => {
+  const login = async (email, password) => {
     try {
       setError(null);
 
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.status === 401) {
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
   };
 
-  const register = async (username, password, email, gender) => {
+  const register = async (name, password, email, gender) => {
     try {
       setError(null);
 
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password, email, gender }),
+        body: JSON.stringify({ name, password, email, gender }),
       });
 
       if (response.status === 422) {

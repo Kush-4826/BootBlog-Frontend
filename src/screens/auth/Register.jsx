@@ -7,14 +7,14 @@ import useDynamicTitle from "../../hooks/useDynamicTitle";
 function Register() {
   useDynamicTitle("Register | BootBlog");
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     password_confirmation: "",
     gender: "male",
   });
   const [errors, setErrors] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     password_confirmation: "",
@@ -34,9 +34,9 @@ function Register() {
     }
   }, [isAuthenticated, navigate, from]);
 
-  const handleUsernameChange = (e) => {
-    setErrors((prev) => ({ ...prev, username: "" }));
-    setFormData((prev) => ({ ...prev, username: e.target.value }));
+  const handleNameChange = (e) => {
+    setErrors((prev) => ({ ...prev, name: "" }));
+    setFormData((prev) => ({ ...prev, name: e.target.value }));
   };
 
   const handleEmailChange = (e) => {
@@ -61,18 +61,18 @@ function Register() {
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
-      username: "",
+      name: "",
       email: "",
       password: "",
       password_confirmation: "",
     };
 
     // Username validation
-    if (formData.username.length === 0) {
-      newErrors.username = "Username is required";
+    if (formData.name.length === 0) {
+      newErrors.name = "Username is required";
       isValid = false;
-    } else if (formData.username.length < 3) {
-      newErrors.username = "Username must be at least 3 characters";
+    } else if (formData.name.length < 3) {
+      newErrors.name = "Username must be at least 3 characters";
       isValid = false;
     }
 
@@ -119,7 +119,7 @@ function Register() {
 
       // Clear previous errors
       setErrors({
-        username: "",
+        name: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -135,7 +135,7 @@ function Register() {
 
       // Call register function
       const result = await register(
-        formData.username,
+        formData.name,
         formData.password,
         formData.email,
         formData.gender
@@ -151,7 +151,7 @@ function Register() {
         console.log("Server validation errors:", result.validationErrors);
         
         const newErrors = {
-          username: result.validationErrors.username || "",
+          name: result.validationErrors.name || "",
           email: result.validationErrors.email || "",
           password: result.validationErrors.password || "",
           password_confirmation: result.validationErrors.password_confirmation || "",
@@ -165,7 +165,7 @@ function Register() {
 
         // Show generic error on username field
         setErrors({ 
-          username: errorMessage,
+          name: errorMessage,
           email: "",
           password: "",
           password_confirmation: ""
@@ -174,7 +174,7 @@ function Register() {
     } catch (err) {
       console.error("Form error:", err);
       setErrors({ 
-        username: "An unexpected error occurred",
+        name: "An unexpected error occurred",
         email: "",
         password: "",
         password_confirmation: ""
@@ -194,19 +194,19 @@ function Register() {
           <Card>
             <Form onSubmit={handleFormSubmit} noValidate>
               <Card.Body>
-                <Form.Group className="mb-3" controlId="username">
+                <Form.Group className="mb-3" controlId="name">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter a Username"
-                    value={formData.username}
-                    onChange={handleUsernameChange}
-                    isInvalid={errors.username.length !== 0}
+                    value={formData.name}
+                    onChange={handleNameChange}
+                    isInvalid={errors.name.length !== 0}
                     disabled={isSubmitting}
                   />
-                  {errors.username.length !== 0 && (
+                  {errors.name.length !== 0 && (
                     <Form.Control.Feedback type="invalid">
-                      {errors.username}
+                      {errors.name}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
