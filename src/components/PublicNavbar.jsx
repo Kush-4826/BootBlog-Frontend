@@ -38,6 +38,7 @@ const PublicNavbar = () => {
           <Nav>
             {isAuthenticated ? (
               <NavDropdown
+                align={"end"}
                 title={<PersonCircle width={25} height={25} />}
                 id="collapsible-nav-dropdown"
               >
