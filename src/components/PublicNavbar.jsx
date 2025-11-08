@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router";
 import { PersonCircle } from "react-bootstrap-icons";
 
 const PublicNavbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
   const navigateToRoute = (route) => {
@@ -46,9 +46,12 @@ const PublicNavbar = () => {
                 <NavDropdown.Item href="#action/3.2">
                   My Blogs
                 </NavDropdown.Item>
-                {/* <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item> */}
+                {
+                  isAdmin &&
+                  <NavDropdown.Item onClick={() => navigateToRoute("/admin/dashboard")}>
+                    Admin Panel
+                  </NavDropdown.Item>
+                }
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>
                   Log Out
