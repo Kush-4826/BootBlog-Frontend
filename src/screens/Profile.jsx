@@ -13,10 +13,13 @@ import useDynamicTitle from "../hooks/useDynamicTitle";
 import PublicNavbar from "../components/PublicNavbar";
 import { Floppy2Fill, PencilFill } from "react-bootstrap-icons";
 import { useState } from "react";
+import UserDetailsUpdateWarningModal from "../components/UserDetailsUpdateWarningModal";
 
 const Profile = () => {
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const { user, logout } = useAuth();
+
+  const [showWarningModal, setShowWarningModal] = useState(false);
 
   const [isProfileFormEnabled, setIsProfileFormEnabled] = useState(false);
 
@@ -63,8 +66,7 @@ const Profile = () => {
     return isValid;
   };
 
-  const handleProfileEditToggle = async (e) => {
-    e.preventDefault();
+  const handleProfileEdit = async () => {
     if (isProfileFormEnabled) {
       setProfileFormErrors({ email: "", gender: "", about: "" });
 
@@ -99,14 +101,12 @@ const Profile = () => {
         return;
       }
 
-      const data = await response.json();
-      setUpdateProfileFormData(prevState => ({
-        ...prevState,
-        email: data.email,
-        gender: data.gender,
-        about: data.about,
-      }));
+      handleLogout();
     }
+  };
+
+  const handleProfileEditToggle = async (e) => {
+    e.preventDefault();
     setIsProfileFormEnabled(!isProfileFormEnabled);
   };
 
@@ -119,6 +119,11 @@ const Profile = () => {
     <>
       <PublicNavbar />
       <Container fluid>
+        <UserDetailsUpdateWarningModal
+          show={showWarningModal}
+          onClose={() => setShowWarningModal(false)}
+          onConfirm={handleProfileEdit}
+        />
         <Row className="">
           <Col md={8} className="mx-auto mt-4">
             <Container fluid className="p-4">
@@ -234,7 +239,7 @@ const Profile = () => {
                     variant={isProfileFormEnabled ? "success" : "primary"}
                     className="d-flex align-items-center"
                     id="button-addon2"
-                    onClick={handleProfileEditToggle}
+                    onClick={isProfileFormEnabled ? () => setShowWarningModal(true) : handleProfileEditToggle}
                   >
                     {isProfileFormEnabled ? (
                       <>
