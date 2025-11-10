@@ -28,7 +28,9 @@ const PublicNavbar = () => {
       variant="light"
     >
       <Container>
-        <Navbar.Brand onClick={() => navigateToRoute("/")}>BootBlog</Navbar.Brand>
+        <Navbar.Brand onClick={() => navigateToRoute("/")}>
+          BootBlog
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
@@ -42,16 +44,19 @@ const PublicNavbar = () => {
                 title={<PersonCircle width={25} height={25} />}
                 id="collapsible-nav-dropdown"
               >
-                <NavDropdown.Item onClick={() => navigateToRoute("/profile")}>Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
+                <NavDropdown.Item onClick={() => navigateToRoute("/profile")}>
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigateToRoute("/blogs")}>
                   My Blogs
                 </NavDropdown.Item>
-                {
-                  isAdmin &&
-                  <NavDropdown.Item onClick={() => navigateToRoute("/admin/dashboard")}>
+                {isAdmin && (
+                  <NavDropdown.Item
+                    onClick={() => navigateToRoute("/admin/dashboard")}
+                  >
                     Admin Panel
                   </NavDropdown.Item>
-                }
+                )}
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>
                   Log Out
