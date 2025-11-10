@@ -33,3 +33,9 @@ export const scrollToTop = () => {
     behavior: "smooth", // Smooth scroll animation
   });
 };
+
+export function capitalizeWords(str) {
+  return str.split(' ').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ');
+}
