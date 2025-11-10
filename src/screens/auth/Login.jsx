@@ -118,7 +118,7 @@ function Login() {
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="email"
                     placeholder="Enter email"
                     value={formData.email}
                     onChange={handleEmailChange}
