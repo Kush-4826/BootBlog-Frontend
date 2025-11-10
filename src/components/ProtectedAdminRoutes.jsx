@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router";
 import { useAuth } from "../context/AuthContext"
+import NotFound from "../screens/errors/NotFound";
 
 const ProtectedAdminRoutes = () => {
   const {isAuthenticated, isAdmin, loading} = useAuth();
@@ -14,7 +15,7 @@ const ProtectedAdminRoutes = () => {
   }
 
   if(!isAdmin){
-    return <Navigate to="/404" replace />
+    return <NotFound />
   }
 
   return <Outlet />;
