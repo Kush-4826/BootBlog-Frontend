@@ -8,10 +8,9 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import NotFound from "../screens/errors/NotFound";
 import ProtectedAdminRoutes from "../components/ProtectedAdminRoutes";
 import Dashboard from "../admin/screens/Dashboard";
+import UserBlogs from "../screens/UserBlogs";
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
-
   return (
     <Routes>
       {/* Public Routes */}
@@ -19,18 +18,19 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Home />} />
       <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/blogs" element={<UserBlogs />} />
       </Route>
 
       <Route element={<ProtectedAdminRoutes />}>
         <Route path="/admin/dashboard" element={<Dashboard />} />
       </Route>
-
     </Routes>
   );
-}
+};
 
 export default AppRoutes;
