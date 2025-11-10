@@ -9,6 +9,7 @@ import NotFound from "../screens/errors/NotFound";
 import ProtectedAdminRoutes from "../components/ProtectedAdminRoutes";
 import Dashboard from "../admin/screens/Dashboard";
 import UserBlogs from "../screens/UserBlogs";
+import AdminUsers from "../admin/screens/AdminUsers";
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
 
       <Route element={<ProtectedAdminRoutes />}>
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
       </Route>
     </Routes>
   );
