@@ -26,6 +26,7 @@ const AdminNavbar = () => {
       className="bg-body-secondary"
       bg="warning"
       variant="light"
+      sticky='top'
     >
       <Container>
         <Navbar.Brand onClick={() => navigateToRoute("/admin/dashboard")}>

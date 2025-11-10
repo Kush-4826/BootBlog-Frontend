@@ -25,6 +25,7 @@ const PublicNavbar = () => {
       expand="lg"
       className="bg-body-secondary"
       bg="info"
+      sticky="top"
       variant="light"
     >
       <Container>
