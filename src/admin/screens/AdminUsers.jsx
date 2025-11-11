@@ -22,6 +22,7 @@ import {
   Trash2Fill,
 } from "react-bootstrap-icons";
 import ReactPaginate from "react-paginate";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 const AdminUsers = () => {
   useDynamicTitle("Users | BootBlog");
@@ -33,6 +34,15 @@ const AdminUsers = () => {
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
+  const [modalDeatils, setModalDetails] = useState({
+    show: false,
+    onConfirm: () => {},
+    onClose: () => {},
+    title: "",
+    message: "",
+    confirmButtonText: "Confirm",
+    confirmButtonVariant: "warning",
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -60,8 +70,81 @@ const AdminUsers = () => {
     if (isAuthenticated && isAdmin) fetchUserData();
   }, [user, pageNumber]);
 
+  const onCloseModal = () => {
+    setModalDetails((prevState) => ({
+      show: false,
+      onConfirm: () => {},
+      onClose: () => {},
+      title: "",
+      message: "",
+      confirmButtonText: "Confirm",
+      confirmButtonVariant: "warning",
+    }));
+  };
+
+  const handleDeleteUser = () => {
+    const deleteUser = async () => {
+
+
+      onCloseModal();
+    };
+
+
+    const newModalDetails = {
+      show: true,
+      onConfirm: deleteUser,
+      onClose: onCloseModal,
+      title: "Are You Sure?",
+      message:
+        "Are you sure you want to delete this user? All the blogs created by this user will get deleted...",
+      confirmButtonText: "Yes, Delete",
+      confirmButtonVariant: "danger",
+    };
+
+    setModalDetails((prevState) => newModalDetails);
+  };
+
+  const handlePromoteUser = () => {
+    const promoteUser = async () => {
+      onCloseModal();
+    };
+
+    const newModalDetails = {
+      show: true,
+      onConfirm: promoteUser,
+      onClose: onCloseModal,
+      title: "Are You Sure?",
+      message:
+        "Are you sure you want to promote this user to <strong>ADMIN</strong>?",
+      confirmButtonText: "Yes, Promote",
+      confirmButtonVariant: "success",
+    };
+
+    setModalDetails((prevState) => newModalDetails);
+  };
+
+  const handleDemoteUser = () => {
+    const demoteUser = async () => {
+      onCloseModal();
+    };
+
+    const newModalDetails = {
+      show: true,
+      onConfirm: demoteUser,
+      onClose: onCloseModal,
+      title: "Are You Sure?",
+      message:
+        "Are you sure you want to demote this user to <strong>AUTHOR</strong>?",
+      confirmButtonText: "Yes, Demote",
+      confirmButtonVariant: "warning",
+    };
+
+    setModalDetails((prevState) => newModalDetails);
+  };
+
   return (
     <>
+      <ConfirmationModal {...modalDeatils} />
       <AdminNavbar />
       <Container className="py-4">
         <Row>
@@ -94,23 +177,12 @@ const AdminUsers = () => {
                           <OverlayTrigger
                             placement="bottom"
                             overlay={
-                              <Tooltip id={`tooltip-edit`}>Edit User</Tooltip>
-                            }
-                          >
-                            <Button variant="outline-warning">
-                              <PencilFill />
-                            </Button>
-                          </OverlayTrigger>
-
-                          <OverlayTrigger
-                            placement="bottom"
-                            overlay={
                               <Tooltip id={`tooltipdelete`}>
                                 Delete User
                               </Tooltip>
                             }
                           >
-                            <Button variant="outline-danger">
+                            <Button variant="outline-danger" onClick={handleDeleteUser}>
                               <Trash2Fill />
                             </Button>
                           </OverlayTrigger>
@@ -124,7 +196,7 @@ const AdminUsers = () => {
                                   </Tooltip>
                                 }
                               >
-                                <Button variant="outline-primary">
+                                <Button variant="outline-primary" onClick={handleDemoteUser}>
                                   <PersonDown />
                                 </Button>
                               </OverlayTrigger>
@@ -137,7 +209,7 @@ const AdminUsers = () => {
                                   </Tooltip>
                                 }
                               >
-                                <Button variant="outline-success">
+                                <Button variant="outline-success" onClick={handlePromoteUser}>
                                   <PersonUp />
                                 </Button>
                               </OverlayTrigger>
@@ -150,7 +222,7 @@ const AdminUsers = () => {
             </Table>
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-3">
           <Col className="d-flex justify-content-center">
             <ReactPaginate
               breakLabel="..."
