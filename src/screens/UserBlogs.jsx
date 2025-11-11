@@ -46,11 +46,13 @@ const UserBlogs = () => {
       <PublicNavbar />
       <Container className="py-4">
         <Row>
-          <Col lg={8}>
-            <h2>My Blogs</h2>
+          <Col xs={6} md={8}>
+            <h2 className="mb-0">My Blogs</h2>
           </Col>
-          <Col lg={4} className="d-flex justify-content-end align-items-center">
-            <Button variant="outline-success" className="d-flex align-items-center"><PlusLg className="me-1" />Create a Blog</Button>
+          <Col xs={6} md={4} className="d-flex justify-content-end align-items-center">
+            <Button variant="outline-success" className="d-flex align-items-center px-sm-3 px-2 py-2"><PlusLg width={20} height={20} />
+            <p className="ms-1 mb-0 d-none d-sm-block">Create a Blog</p>
+            </Button>
           </Col>
         </Row>
         {blogs && blogs.length !== 0 ? JSON.stringify(blogs) : <p>You don't have any blogs yet!</p>}
