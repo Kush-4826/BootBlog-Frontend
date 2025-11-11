@@ -10,6 +10,7 @@ import ProtectedAdminRoutes from "../components/ProtectedAdminRoutes";
 import Dashboard from "../admin/screens/Dashboard";
 import UserBlogs from "../screens/UserBlogs";
 import AdminUsers from "../admin/screens/AdminUsers";
+import AdminCategories from "../admin/screens/AdminCategories";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
       <Route element={<ProtectedAdminRoutes />}>
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
       </Route>
     </Routes>
   );

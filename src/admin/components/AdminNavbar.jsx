@@ -37,7 +37,7 @@ const AdminNavbar = () => {
           <Nav className="me-auto">
             <Nav.Link onClick={() => navigateToRoute("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigateToRoute("/admin/users")}>Users</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link onClick={() => navigateToRoute("/admin/categories")}>Categories</Nav.Link>
           </Nav>
           <Nav>
             {isAuthenticated && isAdmin && (
