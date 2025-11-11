@@ -44,29 +44,26 @@ const AdminUsers = () => {
     confirmButtonVariant: "warning",
   });
 
+  const fetchUserData = async () => {
+    const response = await fetch(`${backendUrl}/api/users?page=${pageNumber}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (response.status == 401) {
+      const error = await response.json();
+
+      setError(error.error);
+    }
+
+    const data = await response.json();
+    setUserData(data);
+  };
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      const response = await fetch(
-        `${backendUrl}/api/users?page=${pageNumber}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      if (response.status == 401) {
-        const error = await response.json();
-
-        setError(error.error);
-      }
-
-      const data = await response.json();
-      setUserData(data);
-    };
-
     if (isAuthenticated && isAdmin) fetchUserData();
   }, [user, pageNumber]);
 
@@ -82,13 +79,33 @@ const AdminUsers = () => {
     }));
   };
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = (userId) => {
     const deleteUser = async () => {
+      const response = await fetch(`${backendUrl}/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
+      if (!response.ok) {
+        const newModalDetails = {
+          show: true,
+          onConfirm: onCloseModal,
+          onClose: onCloseModal,
+          title: "Error",
+          message: "We encountered an error while deleting the user!",
+          confirmButtonText: "OK",
+          confirmButtonVariant: "danger",
+        };
 
+        setModalDetails((prevState) => newModalDetails);
+        return;
+      }
+      fetchUserData();
       onCloseModal();
     };
-
 
     const newModalDetails = {
       show: true,
@@ -104,8 +121,32 @@ const AdminUsers = () => {
     setModalDetails((prevState) => newModalDetails);
   };
 
-  const handlePromoteUser = () => {
+  const handlePromoteUser = (userId) => {
     const promoteUser = async () => {
+      const response = await fetch(`${backendUrl}/api/users/${userId}/promote`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`
+        }
+      });
+
+      if(!response.ok) {
+        const newModalDetails = {
+          show: true,
+          onConfirm: onCloseModal,
+          onClose: onCloseModal,
+          title: "Error",
+          message: "We encountered an error while Promoting the user to ADMIN!",
+          confirmButtonText: "OK",
+          confirmButtonVariant: "primary",
+        };
+
+        setModalDetails((prevState) => newModalDetails);
+        return;
+      }
+
+      fetchUserData();
       onCloseModal();
     };
 
@@ -123,8 +164,32 @@ const AdminUsers = () => {
     setModalDetails((prevState) => newModalDetails);
   };
 
-  const handleDemoteUser = () => {
+  const handleDemoteUser = (userId) => {
     const demoteUser = async () => {
+      const response = await fetch(`${backendUrl}/api/users/${userId}/demote`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`
+        }
+      });
+
+      if(!response.ok) {
+        const newModalDetails = {
+          show: true,
+          onConfirm: onCloseModal,
+          onClose: onCloseModal,
+          title: "Error",
+          message: "We encountered an error while Demoting the user to AUTHOR!",
+          confirmButtonText: "OK",
+          confirmButtonVariant: "primary",
+        };
+
+        setModalDetails((prevState) => newModalDetails);
+        return;
+      }
+
+      fetchUserData();
       onCloseModal();
     };
 
@@ -165,7 +230,7 @@ const AdminUsers = () => {
               <tbody>
                 {userData &&
                   userData.users.map((usr) => (
-                    <tr key={usr.id} onClick={() => console.log(usr.id)}>
+                    <tr key={usr.id}>
                       <td>{usr.id}</td>
                       <td>{usr.name}</td>
                       <td>{usr.email}</td>
@@ -182,7 +247,10 @@ const AdminUsers = () => {
                               </Tooltip>
                             }
                           >
-                            <Button variant="outline-danger" onClick={handleDeleteUser}>
+                            <Button
+                              variant="outline-danger"
+                              onClick={() => handleDeleteUser(usr.id)}
+                            >
                               <Trash2Fill />
                             </Button>
                           </OverlayTrigger>
@@ -196,7 +264,10 @@ const AdminUsers = () => {
                                   </Tooltip>
                                 }
                               >
-                                <Button variant="outline-primary" onClick={handleDemoteUser}>
+                                <Button
+                                  variant="outline-primary"
+                                  onClick={() => handleDemoteUser(usr.id)}
+                                >
                                   <PersonDown />
                                 </Button>
                               </OverlayTrigger>
@@ -209,7 +280,10 @@ const AdminUsers = () => {
                                   </Tooltip>
                                 }
                               >
-                                <Button variant="outline-success" onClick={handlePromoteUser}>
+                                <Button
+                                  variant="outline-success"
+                                  onClick={() => handlePromoteUser(usr.id)}
+                                >
                                   <PersonUp />
                                 </Button>
                               </OverlayTrigger>
