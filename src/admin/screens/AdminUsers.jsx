@@ -18,8 +18,11 @@ import {
   ChevronRight,
   PencilFill,
   PersonDown,
+  PersonFillDown,
+  PersonFillUp,
   PersonUp,
   Trash2Fill,
+  TrashFill,
 } from "react-bootstrap-icons";
 import ReactPaginate from "react-paginate";
 import ConfirmationModal from "../components/ConfirmationModal";
@@ -123,15 +126,18 @@ const AdminUsers = () => {
 
   const handlePromoteUser = (userId) => {
     const promoteUser = async () => {
-      const response = await fetch(`${backendUrl}/api/users/${userId}/promote`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`
+      const response = await fetch(
+        `${backendUrl}/api/users/${userId}/promote`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
         }
-      });
+      );
 
-      if(!response.ok) {
+      if (!response.ok) {
         const newModalDetails = {
           show: true,
           onConfirm: onCloseModal,
@@ -170,11 +176,11 @@ const AdminUsers = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`
-        }
+          Authorization: `Bearer ${authToken}`,
+        },
       });
 
-      if(!response.ok) {
+      if (!response.ok) {
         const newModalDetails = {
           show: true,
           onConfirm: onCloseModal,
@@ -251,7 +257,7 @@ const AdminUsers = () => {
                               variant="outline-danger"
                               onClick={() => handleDeleteUser(usr.id)}
                             >
-                              <Trash2Fill />
+                              <TrashFill width={20} height={20} />
                             </Button>
                           </OverlayTrigger>
                           {usr.id !== user.id &&
@@ -268,7 +274,7 @@ const AdminUsers = () => {
                                   variant="outline-primary"
                                   onClick={() => handleDemoteUser(usr.id)}
                                 >
-                                  <PersonDown />
+                                  <PersonFillDown width={20} height={20} />
                                 </Button>
                               </OverlayTrigger>
                             ) : (
@@ -284,7 +290,7 @@ const AdminUsers = () => {
                                   variant="outline-success"
                                   onClick={() => handlePromoteUser(usr.id)}
                                 >
-                                  <PersonUp />
+                                  <PersonFillUp width={20} height={20} />
                                 </Button>
                               </OverlayTrigger>
                             ))}
